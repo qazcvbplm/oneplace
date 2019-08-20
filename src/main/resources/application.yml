@@ -30,6 +30,10 @@ spring:
     filters: stat,wall,slf4j
     # 通过connectProperties属性来打开mergeSql功能；慢SQL记录
     connectionProperties: druid.stat.mergeSql=true;druid.stat.slowSqlMillis=5000
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
 mybatis-plus:
   mapper-locations: com.ops.daoimple.*.xml
   type-aliases-package: com.ops.entity

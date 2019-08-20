@@ -51,7 +51,7 @@ public class PackageUtil {
                         break;
                     default:
                         //在某些WEB服务器中运行WAR包时，它不会像TOMCAT一样将WAR包解压为目录的，如JBOSS7，它是使用了一种叫VFS的协议
-                        System.out.println("unknown protocol " + protocol);
+                        // System.out.println("unknown protocol " + protocol);
                         break;
                 }
                 classList.addAll(childClassList);

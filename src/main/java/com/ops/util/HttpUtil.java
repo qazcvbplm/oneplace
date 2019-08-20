@@ -110,7 +110,7 @@ public class HttpUtil {
 
                 return sb.toString();
             } else {    //
-                System.out.println("状态码：" + code);
+                //System.out.println("状态码：" + code);
                 return null;
             }
         } catch (Exception e) {

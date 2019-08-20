@@ -33,7 +33,6 @@ public class ExceptionResolver extends SimpleMappingExceptionResolver {
                 for (StackTraceElement error : ex.getStackTrace()) {
                     sb.append(ex + "-" + error.toString()).append("\n");
                 }
-                logger.info(sb.toString());
                 result.put("msg", "");
             }
             //此行必加，否则返回的json在浏览器中看到是乱码，不易于识别

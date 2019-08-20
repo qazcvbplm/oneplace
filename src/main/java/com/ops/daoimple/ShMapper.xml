@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ops.dao.ShMapper">
+    <resultMap id="BaseResultMap" type="com.ops.entity.Sh">
+        <id column="Id" jdbcType="INTEGER" property="id"/>
+        <result column="placeId" jdbcType="VARCHAR" property="placeid"/>
+        <result column="content" jdbcType="VARCHAR" property="content"/>
+    </resultMap>
+    <sql id="Base_Column_List">
+    Id, placeId, content
+  </sql>
+    <select id="find" parameterType="com.ops.entity.Sh" resultMap="BaseResultMap">
+        select * from sh
+        <if test="placeid!=null">
+            where placeid=#{placeid}
+        </if>
+    </select>
+    <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from sh
+        where Id = #{id,jdbcType=INTEGER}
+    </select>
+    <insert id="insert" parameterType="com.ops.entity.Sh">
+    insert into sh (Id, placeId, content
+      )
+    values (#{id,jdbcType=INTEGER}, #{placeid,jdbcType=VARCHAR}, #{content,jdbcType=VARCHAR}
+      )
+  </insert>
+    <insert id="insertSelective" parameterType="com.ops.entity.Sh">
+        insert into sh
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                Id,
+            </if>
+            <if test="placeid != null">
+                placeId,
+            </if>
+            <if test="content != null">
+                content,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                #{id,jdbcType=INTEGER},
+            </if>
+            <if test="placeid != null">
+                #{placeid,jdbcType=VARCHAR},
+            </if>
+            <if test="content != null">
+                #{content,jdbcType=VARCHAR},
+            </if>
+        </trim>
+    </insert>
+    <update id="updateByPrimaryKeySelective" parameterType="com.ops.entity.Sh">
+        update sh
+        <set>
+            <if test="placeid != null">
+                placeId = #{placeid,jdbcType=VARCHAR},
+            </if>
+            <if test="content != null">
+                content = #{content,jdbcType=VARCHAR},
+            </if>
+        </set>
+        where Id = #{id,jdbcType=INTEGER}
+    </update>
+    <update id="updateByPrimaryKey" parameterType="com.ops.entity.Sh">
+    update sh
+    set placeId = #{placeid,jdbcType=VARCHAR},
+      content = #{content,jdbcType=VARCHAR}
+    where Id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

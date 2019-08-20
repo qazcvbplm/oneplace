@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ops.dao.PlaceOpertionMapper">
+    <resultMap id="BaseResultMap" type="com.ops.entity.PlaceOpertion">
+        <id column="Id" jdbcType="INTEGER" property="id"/>
+        <result column="type" jdbcType="VARCHAR" property="type"/>
+        <result column="userId" jdbcType="VARCHAR" property="userid"/>
+        <result column="placeId" jdbcType="VARCHAR" property="placeid"/>
+        <result column="result" jdbcType="VARCHAR" property="result"/>
+        <result column="createTime" jdbcType="TIMESTAMP" property="createtime"/>
+    </resultMap>
+    <sql id="Base_Column_List">
+    Id, type, userId, placeId, result, createTime
+  </sql>
+    <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from place_opertion
+        where Id = #{id,jdbcType=INTEGER}
+    </select>
+    <insert id="insert" parameterType="com.ops.entity.PlaceOpertion">
+    insert into place_opertion ( type, userId, 
+      placeId
+      )
+    values ( #{type,jdbcType=VARCHAR}, #{userid,jdbcType=VARCHAR}, 
+      #{placeid,jdbcType=VARCHAR}
+      )
+  </insert>
+    <select id="findByPlaceId" resultMap="BaseResultMap" parameterType="string">
+  select * from place_opertion where placeId=#{placeid} and result='已完成'
+ </select>
+
+    <select id="findByPlaceId2" resultMap="BaseResultMap" parameterType="string">
+  select * from place_opertion where placeId=#{placeid} and result='待审核'
+ </select>
+
+    <update id="complete" parameterType="int">
+        update place_opertion set result='已完成' where id in
+        <foreach collection="array" index="index" item="item"
+                 open="(" separator="," close=")">
+            #{item}
+        </foreach>
+    </update>
+
+</mapper>

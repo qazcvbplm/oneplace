@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ops.dao.CouponMapper">
+    <resultMap id="BaseResultMap" type="com.ops.entity.Coupon">
+        <id column="Id" jdbcType="INTEGER" property="id"/>
+        <result column="name" jdbcType="VARCHAR" property="name"/>
+        <result column="full" jdbcType="INTEGER" property="full"/>
+        <result column="reduce" jdbcType="INTEGER" property="reduce"/>
+        <result column="outDay" jdbcType="INTEGER" property="outDay"/>
+        <result column="isDelete" jdbcType="INTEGER" property="isdelete"/>
+    </resultMap>
+    <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    *
+    from coupon
+    where Id = #{id,jdbcType=INTEGER}
+  </select>
+    <insert id="insert" parameterType="com.ops.entity.Coupon">
+    insert into coupon (Id, name, full, 
+      reduce,outDay)
+    values (#{id,jdbcType=INTEGER}, #{name,jdbcType=VARCHAR}, #{full,jdbcType=INTEGER}, 
+      #{reduce,jdbcType=INTEGER},#{outDay})
+  </insert>
+    <select id="find" resultMap="BaseResultMap" parameterType="com.ops.entity.Coupon">
+        select * from coupon
+        <if test="mqo.orderBy!=null">
+            order by #{mqo.orderBy}
+        </if>
+        <if test="mqo.page!=null and mqo.size!=null">
+            limit #{mqo.page},#{mqo.size}
+        </if>
+    </select>
+</mapper>

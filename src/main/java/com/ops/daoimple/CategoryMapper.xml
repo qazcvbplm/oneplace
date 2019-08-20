@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ops.dao.CategoryMapper">
+    <resultMap id="BaseResultMap" type="com.ops.entity.Category">
+        <id column="Id" jdbcType="INTEGER" property="id"/>
+        <result column="name" jdbcType="VARCHAR" property="name"/>
+        <result column="isDelete" jdbcType="INTEGER" property="isdelete"/>
+        <result column="shopId" jdbcType="VARCHAR" property="shopid"/>
+    </resultMap>
+    <sql id="Base_Column_List">
+    Id, name, isDelete, shopId
+  </sql>
+    <select id="findByShopId" parameterType="string" resultMap="BaseResultMap">
+     select * from category where shopId=#{shopId} and isDelete=0
+  </select>
+    <insert id="insert" parameterType="com.ops.entity.Category">
+    insert into category (Id, name, 
+      shopId)
+    values (#{id,jdbcType=INTEGER}, #{name,jdbcType=VARCHAR}, 
+      #{shopid,jdbcType=VARCHAR})
+  </insert>
+    <update id="updateByPrimaryKeySelective" parameterType="com.ops.entity.Category">
+        update category
+        <set>
+            <if test="name != null">
+                name = #{name,jdbcType=VARCHAR},
+            </if>
+            <if test="isdelete != null">
+                isDelete = #{isdelete,jdbcType=INTEGER},
+            </if>
+            <if test="shopid != null">
+                shopId = #{shopid,jdbcType=VARCHAR},
+            </if>
+        </set>
+        where Id = #{id,jdbcType=INTEGER}
+    </update>
+
+</mapper>

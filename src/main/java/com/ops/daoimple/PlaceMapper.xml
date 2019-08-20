@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ops.dao.PlaceMapper">
+    <resultMap id="BaseResultMap" type="com.ops.entity.Place">
+        <id column="Id" jdbcType="VARCHAR" property="id"/>
+        <result column="url" jdbcType="VARCHAR" property="url"/>
+        <result column="image" jdbcType="VARCHAR" property="image"/>
+        <result column="userId" jdbcType="VARCHAR" property="userid"/>
+        <result column="shopId" jdbcType="VARCHAR" property="shopid"/>
+        <result column="shopName" jdbcType="VARCHAR" property="shopName"/>
+        <result column="name" jdbcType="VARCHAR" property="name"/>
+        <result column="product_name" jdbcType="VARCHAR" property="productName"/>
+        <result column="createTimeLong" jdbcType="BIGINT" property="createtimelong"/>
+        <result column="createTime" jdbcType="TIMESTAMP" property="createtime"/>
+        <result column="isDelete" jdbcType="INTEGER" property="isdelete"/>
+        <result column="update_count" jdbcType="INTEGER" property="updateCount"/>
+        <association property="wxUser" javaType="com.ops.entity.WxUser">
+            <result column="nickName" jdbcType="VARCHAR" property="nickname"/>
+        </association>
+    </resultMap>
+    <select id="findUserId" resultMap="BaseResultMap" parameterType="string">
+   select * from place where userId=#{openid} and isdelete=0
+  </select>
+    <select id="find" resultMap="BaseResultMap" parameterType="com.ops.entity.Place">
+        select
+        <if test="mqo.total!=null">
+            count(*) as isDelete
+        </if>
+        <if test="mqo.total==null">
+            (select count(*) from wx_user_follow where userId=#{userid} and followId=place.Id) as
+            updateCount,place.Id,place.name,
+            place.userId,place.url,place.image,place.shopId,shop.name as
+            shopName,((unix_timestamp(now())-(place.createTimeLong/1000))/(24*60*60)) as createTimeLong,wx_user.nickName
+        </if>
+        from place,wx_user,shop
+        where
+        place.userId=wx_user.openid
+        and
+        place.shopId=shop.id
+        <if test="gz!=null">
+            and place.id in (select followId from wx_user_follow where userid = #{userid})
+        </if>
+        <if test="isdelete!=null">
+            and place.isdelete = #{isdelete}
+        </if>
+        <if test="mqo.orderBy!=null">
+            order by #{mqo.orderBy}
+        </if>
+        <if test="mqo.page!=null and mqo.size!=null">
+            limit #{mqo.page},#{mqo.size}
+        </if>
+    </select>
+    <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select 
+    *
+    from place
+    where Id = #{id,jdbcType=VARCHAR}
+  </select>
+    <insert id="insert" parameterType="com.ops.entity.Place" useGeneratedKeys="true" keyProperty="id">
+    insert into place (Id, url, image, 
+      userId, shopId, createTimeLong,product_name)
+    values (#{id,jdbcType=VARCHAR}, #{url,jdbcType=VARCHAR}, #{image,jdbcType=VARCHAR}, 
+      #{userid,jdbcType=VARCHAR}, #{shopid,jdbcType=VARCHAR}, #{createtimelong,jdbcType=BIGINT},#{productName})
+  </insert>
+    <update id="updateByPrimaryKeySelective" parameterType="com.ops.entity.Place">
+        update place
+        <set>
+            <if test="url != null">
+                url = #{url,jdbcType=VARCHAR},
+            </if>
+            <if test="image != null">
+                image = #{image,jdbcType=VARCHAR},
+            </if>
+            <if test="userid != null">
+                userId = #{userid,jdbcType=VARCHAR},
+            </if>
+            <if test="shopid != null">
+                shopId = #{shopid,jdbcType=VARCHAR},
+            </if>
+            <if test="name != null">
+                name = #{name,jdbcType=VARCHAR},
+            </if>
+            <if test="updateCount!= null">
+                update_count = #{updateCount},
+            </if>
+            <if test="createtimelong != null">
+                createTimeLong = #{createtimelong,jdbcType=BIGINT},
+            </if>
+            <if test="createtime != null">
+                createTime = #{createtime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="isdelete != null">
+                isDelete = #{isdelete,jdbcType=INTEGER},
+            </if>
+        </set>
+        where Id = #{id,jdbcType=VARCHAR}
+    </update>
+</mapper>

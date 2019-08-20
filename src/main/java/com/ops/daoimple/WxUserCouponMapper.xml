@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ops.dao.WxUserCouponMapper">
+    <resultMap id="BaseResultMap" type="com.ops.entity.WxUserCoupon">
+        <id column="Id" jdbcType="INTEGER" property="id"/>
+        <result column="userId" jdbcType="VARCHAR" property="userid"/>
+        <result column="orderId" jdbcType="VARCHAR" property="orderid"/>
+        <result column="couponId" jdbcType="INTEGER" property="couponid"/>
+        <result column="createTime" jdbcType="TIMESTAMP" property="createtime"/>
+        <result column="outTime" jdbcType="BIGINT" property="outtime"/>
+        <association property="coupon" javaType="com.ops.entity.Coupon">
+            <result column="name" jdbcType="VARCHAR" property="name"/>
+            <result column="full" jdbcType="INTEGER" property="full"/>
+            <result column="reduce" jdbcType="INTEGER" property="reduce"/>
+        </association>
+    </resultMap>
+    <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    *
+    from wx_user_coupon
+    where Id = #{id,jdbcType=INTEGER}
+  </select>
+    <insert id="insert" parameterType="com.ops.entity.WxUserCoupon">
+    insert into wx_user_coupon (Id, userId, 
+      couponId, outTime
+      )
+    values (#{id,jdbcType=INTEGER}, #{userid,jdbcType=VARCHAR}, 
+      #{couponid,jdbcType=INTEGER}, #{outtime,jdbcType=BIGINT}
+      )
+  </insert>
+    <select id="findByUserId" resultMap="BaseResultMap" parameterType="string">
+      select wx_user_coupon.*,coupon.* from wx_user_coupon,coupon 
+      where wx_user_coupon.couponId=coupon.id and wx_user_coupon.userId=#{userId} and wx_user_coupon.outTime &gt; unix_timestamp(now())*1000 
+      and  wx_user_coupon.orderId='0'
+  </select>
+    <update id="use" parameterType="com.ops.entity.WxUserCoupon">
+    update wx_user_coupon set orderId=#{orderid} where Id=#{id}
+  </update>
+</mapper>

@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ops.dao.OrderProductMapper">
+    <resultMap id="BaseResultMap" type="com.ops.entity.OrderProduct">
+        <id column="Id" jdbcType="INTEGER" property="id"/>
+        <result column="productName" jdbcType="VARCHAR" property="productname"/>
+        <result column="productImage" jdbcType="VARCHAR" property="productimage"/>
+        <result column="numbers" jdbcType="INTEGER" property="numbers"/>
+        <result column="productId" jdbcType="INTEGER" property="productId"/>
+        <result column="productPrice" jdbcType="DECIMAL" property="productprice"/>
+        <result column="orderId" jdbcType="VARCHAR" property="orderid"/>
+        <result column="totalPrice" jdbcType="DECIMAL" property="totalprice"/>
+        <result column="productType" jdbcType="VARCHAR" property="producttype"/>
+    </resultMap>
+    <select id="findByOrder" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select * from order_product
+    where orderId=#{orderId}
+  </select>
+    <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    *
+    from order_product
+    where Id = #{id,jdbcType=INTEGER}
+  </select>
+    <insert id="insert" parameterType="com.ops.entity.OrderProduct">
+    insert into order_product (Id, productName, productImage, 
+      numbers, productPrice, orderId, 
+      totalPrice, productType,productId)
+    values (#{id,jdbcType=INTEGER}, #{productname,jdbcType=VARCHAR}, #{productimage,jdbcType=VARCHAR}, 
+      #{numbers,jdbcType=INTEGER}, #{productprice,jdbcType=DECIMAL}, #{orderid,jdbcType=VARCHAR}, 
+      #{totalprice,jdbcType=DECIMAL}, #{producttype,jdbcType=VARCHAR},#{productId})
+  </insert>
+
+
+</mapper>

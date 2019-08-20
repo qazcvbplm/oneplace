@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ops.dao.ProductMapper">
+    <resultMap id="BaseResultMap" type="com.ops.entity.Product">
+        <id column="Id" jdbcType="INTEGER" property="id"/>
+        <result column="image" jdbcType="VARCHAR" property="image"/>
+        <result column="sales" jdbcType="INTEGER" property="sales"/>
+        <result column="price" jdbcType="DECIMAL" property="price"/>
+        <result column="categoryId" jdbcType="INTEGER" property="categoryid"/>
+        <result column="shopId" jdbcType="VARCHAR" property="shopid"/>
+        <result column="isDelete" jdbcType="INTEGER" property="isdelete"/>
+        <result column="unit" jdbcType="VARCHAR" property="unit"/>
+        <result column="isShow" jdbcType="INTEGER" property="isshow"/>
+        <result column="name" jdbcType="VARCHAR" property="name"/>
+        <result column="remark" jdbcType="VARCHAR" property="remark"/>
+        <result column="stock" jdbcType="INTEGER" property="stock"/>
+        <result column="type" jdbcType="VARCHAR" property="type"/>
+        <result column="url" jdbcType="VARCHAR" property="url"/>
+        <result column="urlImage" jdbcType="VARCHAR" property="urlImage"/>
+    </resultMap>
+    <update id="sale" parameterType="map">
+     update product set stock=stock-#{count},sales=sales+#{count} where Id=#{id} and stock>=#{count}
+  </update>
+    <select id="findByCategoryId" parameterType="string" resultMap="BaseResultMap">
+    select * from product where categoryId =#{categoryId} and isdelete=0
+  </select>
+    <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    *
+    from product
+    where Id = #{id,jdbcType=INTEGER}
+  </select>
+    <insert id="insert" parameterType="com.ops.entity.Product">
+    insert into product (Id,image, sales, 
+      price, categoryId, shopId, unit, 
+      isShow, name, remark, 
+      stock, type,url,urlImage)
+    values (#{id,jdbcType=INTEGER}, #{image,jdbcType=VARCHAR}, #{sales,jdbcType=INTEGER}, 
+      #{price,jdbcType=DECIMAL}, #{categoryid,jdbcType=INTEGER}, #{shopid,jdbcType=VARCHAR}, #{unit,jdbcType=VARCHAR}, 
+      #{isshow,jdbcType=INTEGER}, #{name,jdbcType=VARCHAR}, #{remark,jdbcType=VARCHAR}, 
+      #{stock,jdbcType=INTEGER}, #{type,jdbcType=VARCHAR},#{url},#{urlImage})
+  </insert>
+
+    <update id="updateByPrimaryKeySelective" parameterType="com.ops.entity.Product">
+        update product
+        <set>
+            <if test="image != null">
+                image = #{image,jdbcType=VARCHAR},
+            </if>
+            <if test="sales != null">
+                sales = #{sales,jdbcType=INTEGER},
+            </if>
+            <if test="price != null">
+                price = #{price,jdbcType=DECIMAL},
+            </if>
+            <if test="categoryid != null">
+                categoryId = #{categoryid,jdbcType=INTEGER},
+            </if>
+            <if test="shopid != null">
+                shopId = #{shopid,jdbcType=VARCHAR},
+            </if>
+            <if test="isdelete != null">
+                isDelete = #{isdelete,jdbcType=INTEGER},
+            </if>
+            <if test="unit != null">
+                unit = #{unit,jdbcType=VARCHAR},
+            </if>
+            <if test="isshow != null">
+                isShow = #{isshow,jdbcType=INTEGER},
+            </if>
+            <if test="name != null">
+                name = #{name,jdbcType=VARCHAR},
+            </if>
+            <if test="remark != null">
+                remark = #{remark,jdbcType=VARCHAR},
+            </if>
+            <if test="stock != null">
+                stock = #{stock,jdbcType=INTEGER},
+            </if>
+            <if test="type != null">
+                type = #{type,jdbcType=VARCHAR},
+            </if>
+            <if test="url != null">
+                url = #{url,jdbcType=VARCHAR},
+            </if>
+            <if test="urlImage != null">
+                urlImage = #{urlImage,jdbcType=VARCHAR},
+            </if>
+        </set>
+        where Id = #{id,jdbcType=INTEGER}
+    </update>
+
+</mapper>

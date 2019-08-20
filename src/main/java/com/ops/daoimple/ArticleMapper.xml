@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ops.dao.ArticleMapper">
+    <resultMap id="BaseResultMap" type="com.ops.entity.Article">
+        <id column="Id" jdbcType="INTEGER" property="id"/>
+        <result column="userId" jdbcType="VARCHAR" property="userid"/>
+        <result column="type" jdbcType="VARCHAR" property="type"/>
+        <result column="createTime" jdbcType="TIMESTAMP" property="createtime"/>
+        <result column="images" jdbcType="VARCHAR" property="images"/>
+        <result column="title" jdbcType="VARCHAR" property="title"/>
+        <result column="content" jdbcType="VARCHAR" property="content"/>
+        <result column="isShow" jdbcType="INTEGER" property="isshow"/>
+        <result column="zan" jdbcType="INTEGER" property="zan"/>
+        <result column="pid" jdbcType="INTEGER" property="pid"/>
+        <association property="wxUser" javaType="com.ops.entity.WxUser">
+            <result column="nickName" jdbcType="VARCHAR" property="nickname"/>
+            <result column="avatarUrl" jdbcType="VARCHAR" property="avatarurl"/>
+        </association>
+    </resultMap>
+    <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    *
+    from article
+    where Id = #{id,jdbcType=INTEGER}
+  </select>
+    <insert id="insert" parameterType="com.ops.entity.Article">
+    insert into article (userId, type, images, title, 
+      content
+      )
+    values (#{userid,jdbcType=VARCHAR}, #{type,jdbcType=VARCHAR}, #{images,jdbcType=VARCHAR}, #{title,jdbcType=VARCHAR}, 
+      #{content,jdbcType=VARCHAR}
+      )
+  </insert>
+    <insert id="hf" parameterType="com.ops.entity.Article">
+    insert into article (userId, pid, 
+      content
+      )
+    values (#{userid,jdbcType=VARCHAR}, #{pid},
+      #{content,jdbcType=VARCHAR}
+      )
+  </insert>
+    <select id="find" resultMap="BaseResultMap" parameterType="com.ops.entity.Article">
+        select
+        <if test="mqo.total!=null">
+            count(*) as zan
+        </if>
+        <if test="mqo.total==null">
+            article.*,wx_user.*
+        </if>
+        from article,wx_user
+        <where>
+            article.userId=wx_user.openid
+            <if test="type!=null">
+                type=#{type}
+            </if>
+        </where>
+        <if test="mqo.orderBy!=null">
+            order by #{mqo.orderBy}
+        </if>
+        <if test="mqo.page!=null and mqo.size!=null">
+            limit #{mqo.page},#{mqo.size}
+        </if>
+    </select>
+    <select id="findByPid" resultMap="BaseResultMap" parameterType="int">
+     select article.*,wx_user.* from article,wx_user where pid=#{pid} and article.userId=wx_user.openid
+  </select>
+</mapper>

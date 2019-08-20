@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ops.dao.ShiroUserMapper">
+    <resultMap id="BaseResultMap" type="com.ops.entity.ShiroUser">
+        <id column="Id" jdbcType="VARCHAR" property="id"/>
+        <result column="userName" jdbcType="VARCHAR" property="username"/>
+        <result column="passWord" jdbcType="VARCHAR" property="password"/>
+        <result column="ascriptionId" jdbcType="VARCHAR" property="ascriptionid"/>
+        <result column="roleId" jdbcType="VARCHAR" property="roleId"/>
+    </resultMap>
+    <sql id="Base_Column_List">
+    Id, userName, passWord, ascriptionId, roleId
+  </sql>
+    <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from shiro_user
+        where Id = #{id,jdbcType=VARCHAR}
+    </select>
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    update shiro_user
+    set isDelete=1
+    where Id = #{id,jdbcType=VARCHAR}
+  </delete>
+    <insert id="insert" parameterType="com.ops.entity.ShiroUser">
+    insert into shiro_user (Id, userName, passWord, 
+      ascriptionId, roleId)
+    values (#{id,jdbcType=VARCHAR}, #{username,jdbcType=VARCHAR}, #{password,jdbcType=VARCHAR}, 
+      #{ascriptionid,jdbcType=VARCHAR}, #{roleId,jdbcType=VARCHAR})
+  </insert>
+    <insert id="insertSelective" parameterType="com.ops.entity.ShiroUser">
+        insert into shiro_user
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                Id,
+            </if>
+            <if test="username != null">
+                userName,
+            </if>
+            <if test="password != null">
+                passWord,
+            </if>
+            <if test="ascriptionid != null">
+                ascriptionId,
+            </if>
+            <if test="roleId != null">
+                roleId,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                #{id,jdbcType=VARCHAR},
+            </if>
+            <if test="username != null">
+                #{username,jdbcType=VARCHAR},
+            </if>
+            <if test="password != null">
+                #{password,jdbcType=VARCHAR},
+            </if>
+            <if test="ascriptionid != null">
+                #{ascriptionid,jdbcType=VARCHAR},
+            </if>
+            <if test="roleId != null">
+                #{roleId,jdbcType=VARCHAR},
+            </if>
+        </trim>
+    </insert>
+    <update id="updateByPrimaryKeySelective" parameterType="com.ops.entity.ShiroUser">
+        update shiro_user
+        <set>
+            <if test="username != null">
+                userName = #{username,jdbcType=VARCHAR},
+            </if>
+            <if test="password != null">
+                passWord = #{password,jdbcType=VARCHAR},
+            </if>
+            <if test="ascriptionid != null">
+                ascriptionId = #{ascriptionid,jdbcType=VARCHAR},
+            </if>
+            <if test="roleId != null">
+                roleId = #{roleId,jdbcType=VARCHAR},
+            </if>
+        </set>
+        where Id = #{id,jdbcType=VARCHAR}
+    </update>
+    <update id="updateByPrimaryKey" parameterType="com.ops.entity.ShiroUser">
+    update shiro_user
+    set userName = #{username,jdbcType=VARCHAR},
+      passWord = #{password,jdbcType=VARCHAR},
+      ascriptionId = #{ascriptionid,jdbcType=VARCHAR},
+      roleId = #{roleId,jdbcType=VARCHAR}
+    where Id = #{id,jdbcType=VARCHAR}
+  </update>
+
+    <select id="findByUserName" parameterType="String" resultMap="BaseResultMap">
+     select * from shiro_user where userName=#{userName} and isDelete=0
+  </select>
+</mapper>

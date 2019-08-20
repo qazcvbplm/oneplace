@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ops.dao.WxUserBackPackMapper">
+    <resultMap id="BaseResultMap" type="com.ops.entity.WxUserBackPack">
+        <id column="Id" jdbcType="VARCHAR" property="id"/>
+        <result column="openid" jdbcType="VARCHAR" property="openid"/>
+        <result column="image" jdbcType="VARCHAR" property="image"/>
+        <result column="name" jdbcType="VARCHAR" property="name"/>
+        <result column="count" jdbcType="INTEGER" property="count"/>
+    </resultMap>
+    <sql id="Base_Column_List">
+    Id, openid, image, name, count
+  </sql>
+
+    <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from wx_user_backpack
+        where Id = #{id,jdbcType=VARCHAR}
+    </select>
+    <insert id="insert" parameterType="com.ops.entity.WxUserBackPack">
+    insert into wx_user_backpack (Id, openid, image, 
+      name, count)
+    values (#{id,jdbcType=VARCHAR}, #{openid,jdbcType=VARCHAR}, #{image,jdbcType=VARCHAR}, 
+      #{name,jdbcType=VARCHAR}, #{count,jdbcType=INTEGER})
+  </insert>
+    <update id="add" parameterType="com.ops.entity.WxUserBackPack">
+    update wx_user_backpack
+    set count=count+#{count}
+    where Id = #{id,jdbcType=VARCHAR}
+  </update>
+
+    <update id="use" parameterType="com.ops.entity.WxUserBackPack">
+    update wx_user_backpack
+    set count=count-#{count}
+    where Id = #{id,jdbcType=VARCHAR} and (count>#{count} or count=#{count})
+  </update>
+
+    <select id="findByuserId" parameterType="string" resultMap="BaseResultMap">
+  select * from wx_user_backpack where openid=#{userId} and count>0
+  </select>
+</mapper>

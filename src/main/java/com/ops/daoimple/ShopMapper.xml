@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ops.dao.ShopMapper">
+    <resultMap id="BaseResultMap" type="com.ops.entity.Shop">
+        <id column="Id" jdbcType="VARCHAR" property="id"/>
+        <result column="image" jdbcType="VARCHAR" property="image"/>
+        <result column="name" jdbcType="VARCHAR" property="name"/>
+        <result column="core" jdbcType="INTEGER" property="core"/>
+        <result column="stock" jdbcType="INTEGER" property="stock"/>
+        <result column="address" jdbcType="VARCHAR" property="address"/>
+        <result column="status" jdbcType="INTEGER" property="status"/>
+        <result column="title" jdbcType="VARCHAR" property="title"/>
+        <result column="isDelete" jdbcType="INTEGER" property="isdelete"/>
+        <result column="phone" jdbcType="VARCHAR" property="phone"/>
+        <result column="createTime" jdbcType="TIMESTAMP" property="createtime"/>
+    </resultMap>
+    <sql id="Base_Column_List">
+    Id, image, name, core, stock, address, status, title, isDelete, phone, createTime
+  </sql>
+    <select id="find" resultMap="BaseResultMap" parameterType="com.ops.entity.Shop">
+        select
+        <if test="mqo.total!=null">
+            count(*) as isDelete
+        </if>
+        <if test="mqo.total==null">
+            *
+        </if>
+        from shop
+        <where>
+            <if test="name!=null">
+                and name=#{name}
+            </if>
+            <if test="phone!=null">
+                and phone=#{phone}
+            </if>
+            <if test="status!=null">
+                and status=#{status}
+            </if>
+            <if test="id!=null">
+                and id=#{id}
+            </if>
+            <if test="isdelete!=null">
+                and isDelete=#{isdelete}
+            </if>
+        </where>
+        <if test="mqo.orderBy!=null">
+            order by #{mqo.orderBy}
+        </if>
+        <if test="mqo.page!=null and mqo.size!=null">
+            limit #{mqo.page},#{mqo.size}
+        </if>
+    </select>
+    <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from shop
+        where Id = #{id,jdbcType=VARCHAR}
+    </select>
+    <insert id="insert" parameterType="com.ops.entity.Shop">
+    insert into shop (Id, image, name, 
+      core, stock, address, 
+      status, title, 
+      phone)
+    values (#{id,jdbcType=VARCHAR}, #{image,jdbcType=VARCHAR}, #{name,jdbcType=VARCHAR}, 
+      #{core,jdbcType=INTEGER}, #{stock,jdbcType=INTEGER}, #{address,jdbcType=VARCHAR}, 
+      #{status,jdbcType=INTEGER}, #{title,jdbcType=VARCHAR}, 
+      #{phone,jdbcType=VARCHAR})
+  </insert>
+
+    <update id="updateByPrimaryKeySelective" parameterType="com.ops.entity.Shop">
+        update shop
+        <set>
+            <if test="image != null">
+                image = #{image,jdbcType=VARCHAR},
+            </if>
+            <if test="name != null">
+                name = #{name,jdbcType=VARCHAR},
+            </if>
+            <if test="core != null">
+                core = #{core,jdbcType=INTEGER},
+            </if>
+            <if test="stock != null">
+                stock = #{stock,jdbcType=INTEGER},
+            </if>
+            <if test="address != null">
+                address = #{address,jdbcType=VARCHAR},
+            </if>
+            <if test="status != null">
+                status = #{status,jdbcType=INTEGER},
+            </if>
+            <if test="title != null">
+                title = #{title,jdbcType=VARCHAR},
+            </if>
+            <if test="isdelete != null">
+                isDelete = #{isdelete,jdbcType=INTEGER},
+            </if>
+            <if test="phone != null">
+                phone = #{phone,jdbcType=VARCHAR},
+            </if>
+        </set>
+        where Id in
+        <foreach collection="ids" open="(" separator="," close=")" item="item">
+            #{item}
+        </foreach>
+    </update>
+
+</mapper>

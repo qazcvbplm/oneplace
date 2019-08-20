@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ops.dao.ShopApplyMapper">
+    <resultMap id="BaseResultMap" type="com.ops.entity.ShopApply">
+        <id column="Id" jdbcType="INTEGER" property="id"/>
+        <result column="name" jdbcType="VARCHAR" property="name"/>
+        <result column="phone" jdbcType="VARCHAR" property="phone"/>
+        <result column="address" jdbcType="VARCHAR" property="address"/>
+        <result column="image" jdbcType="VARCHAR" property="image"/>
+    </resultMap>
+    <insert id="insert" parameterType="com.ops.entity.ShopApply">
+    insert into shopapply (Id, name, phone, 
+      address, image)
+    values (#{id,jdbcType=INTEGER}, #{name,jdbcType=VARCHAR}, #{phone,jdbcType=VARCHAR}, 
+      #{address,jdbcType=VARCHAR}, #{image,jdbcType=VARCHAR})
+  </insert>
+    <select id="find" resultMap="BaseResultMap">
+    select * from shopapply
+  </select>
+</mapper>

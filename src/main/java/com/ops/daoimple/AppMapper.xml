@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ops.dao.AppMapper">
+    <resultMap id="BaseResultMap" type="com.ops.entity.App">
+        <id column="Id" jdbcType="INTEGER" property="id"/>
+        <result column="js" jdbcType="DECIMAL" property="js"/>
+        <result column="sf" jdbcType="DECIMAL" property="sf"/>
+        <result column="cc" jdbcType="DECIMAL" property="cc"/>
+        <result column="gm" jdbcType="DECIMAL" property="gm"/>
+    </resultMap>
+    <sql id="Base_Column_List">
+    Id, js, sf, cc, gm
+  </sql>
+    <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from app
+        where Id = #{id,jdbcType=INTEGER}
+    </select>
+    <insert id="insert" parameterType="com.ops.entity.App">
+    insert into app (Id, js, sf, cc, 
+      gm)
+    values (#{id,jdbcType=INTEGER}, #{js,jdbcType=DECIMAL}, #{sf,jdbcType=DECIMAL}, #{cc,jdbcType=DECIMAL}, 
+      #{gm,jdbcType=DECIMAL})
+  </insert>
+    <insert id="insertSelective" parameterType="com.ops.entity.App">
+        insert into app
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                Id,
+            </if>
+            <if test="js != null">
+                js,
+            </if>
+            <if test="sf != null">
+                sf,
+            </if>
+            <if test="cc != null">
+                cc,
+            </if>
+            <if test="gm != null">
+                gm,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                #{id,jdbcType=INTEGER},
+            </if>
+            <if test="js != null">
+                #{js,jdbcType=DECIMAL},
+            </if>
+            <if test="sf != null">
+                #{sf,jdbcType=DECIMAL},
+            </if>
+            <if test="cc != null">
+                #{cc,jdbcType=DECIMAL},
+            </if>
+            <if test="gm != null">
+                #{gm,jdbcType=DECIMAL},
+            </if>
+        </trim>
+    </insert>
+    <update id="updateByPrimaryKeySelective" parameterType="com.ops.entity.App">
+        update app
+        <set>
+            <if test="js != null">
+                js = #{js,jdbcType=DECIMAL},
+            </if>
+            <if test="sf != null">
+                sf = #{sf,jdbcType=DECIMAL},
+            </if>
+            <if test="cc != null">
+                cc = #{cc,jdbcType=DECIMAL},
+            </if>
+            <if test="gm != null">
+                gm = #{gm,jdbcType=DECIMAL},
+            </if>
+        </set>
+        where Id = #{id,jdbcType=INTEGER}
+    </update>
+    <update id="updateByPrimaryKey" parameterType="com.ops.entity.App">
+    update app
+    set js = #{js,jdbcType=DECIMAL},
+      sf = #{sf,jdbcType=DECIMAL},
+      cc = #{cc,jdbcType=DECIMAL},
+      gm = #{gm,jdbcType=DECIMAL}
+    where Id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

@@ -14,7 +14,7 @@
         <result column="level" jdbcType="INTEGER" property="level"/>
         <result column="money" jdbcType="DECIMAL" property="money"/>
         <result column="createTime" jdbcType="TIMESTAMP" property="createtime"/>
-        <association property="mqo" javaType="com.com.ops.util.MQO">
+        <association property="mqo" javaType="com.ops.util.MQO">
             <result column="total" property="total"/>
         </association>
     </resultMap>

@@ -142,6 +142,7 @@
     </dependencies>
     <build>
         <plugins>
+
             <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
@@ -149,14 +150,6 @@
                     <mainClass>
                         com.ops.App
                     </mainClass>
-                    <resources>
-                        <resource>
-                            <directory>src/main/java</directory>
-                            <includes>
-                                <include>**/*.xml</include>
-                            </includes>
-                        </resource>
-                    </resources>
                 </configuration>
                 <executions>
                     <execution>
@@ -167,6 +160,15 @@
                 </executions>
             </plugin>
         </plugins>
+        <resources>
+            <resource>
+                <directory>src/main/java</directory>
+                <includes>
+                    <include>**/*.xml</include>
+                </includes>
+                <filtering>false</filtering>
+            </resource>
+        </resources>
     </build>
 
 </project>

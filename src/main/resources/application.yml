@@ -35,8 +35,8 @@ spring:
       ddl-auto: update
     show-sql: true
 mybatis-plus:
-  mapper-locations: com.ops.daoimple.*.xml
-  type-aliases-package: com.ops.entity
+  mapper-locations: com/ops/daoimple/*.xml
+  type-aliases-package: com/ops/entity
 server:
   servlet:
     context-path: /oneplace

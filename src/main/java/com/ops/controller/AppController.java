@@ -27,7 +27,6 @@ public class AppController {
     public void add(HttpServletRequest request, HttpServletResponse response, Article article) {
         App list = appMapper.selectByPrimaryKey(1);
         new ResultUtil().push("list", list).out(request, response);
-        ;
     }
 
     @PostMapping("update")

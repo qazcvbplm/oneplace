@@ -40,3 +40,7 @@ mybatis-plus:
 server:
   servlet:
     context-path: /oneplace
+  tomcat:
+    use-relative-redirects: false
+file:
+  path: /home

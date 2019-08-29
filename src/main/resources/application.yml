@@ -43,4 +43,5 @@ server:
   tomcat:
     use-relative-redirects: false
 file:
-  path: d://
+  path: /usr/local/image/
+  prefix: https://www.sunwou.com/oneplace

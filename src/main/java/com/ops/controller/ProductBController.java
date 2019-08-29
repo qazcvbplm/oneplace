@@ -23,6 +23,12 @@ public class ProductBController {
         return true;
     }
 
+    @PostMapping("/update")
+    public Boolean update(@RequestBody ProductB productB) {
+        productBService.updateById(productB);
+        return true;
+    }
+
     @PostMapping("/delete")
     public Boolean add(Long id) {
         productBService.removeById(id);

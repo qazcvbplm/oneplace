@@ -36,7 +36,15 @@ public class ActivityController {
                 .eq(ActivityB::getUserId, activityB.getUserId())) > 0) {
             throw new RuntimeException("已经报名过");
         }
-        activityBService.save(activityB);
+        Functions activity = functionsService.getById(activityB.getActivityId());
+        if (activity == null) {
+            throw new RuntimeException("活动不存在");
+        }
+        if (activity.getRemark() != null) {
+
+        } else {
+            activityBService.save(activityB);
+        }
         return true;
     }
 
@@ -54,7 +62,9 @@ public class ActivityController {
     }
 
     @GetMapping("/activity/find")
-    public IPage<Functions> add(@ModelAttribute PageAble pageAble) {
-        return functionsService.page(pageAble.getPage(), new QueryWrapper<Functions>().lambda().eq(Functions::getType, "1"));
+    public IPage add(@ModelAttribute PageAble pageAble) {
+        return functionsService.page(pageAble.getIPage(),
+                new QueryWrapper<Functions>().lambda()
+                        .eq(Functions::getType, "1"));
     }
 }

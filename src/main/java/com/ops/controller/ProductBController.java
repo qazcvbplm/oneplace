@@ -36,12 +36,12 @@ public class ProductBController {
     }
 
     @GetMapping("/list")
-    public IPage<ProductB> add(@RequestParam(required = false) Long caId,
-                               @ModelAttribute PageAble pageAble) {
+    public IPage add(@RequestParam(required = false) Long caId,
+                     @ModelAttribute PageAble pageAble) {
         QueryWrapper<ProductB> query = new QueryWrapper<>();
         if (caId != null) {
             query.lambda().eq(ProductB::getCaId, caId);
         }
-        return productBService.page(pageAble.getPage(), query);
+        return productBService.page(pageAble.getIPage(), query);
     }
 }

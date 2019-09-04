@@ -26,6 +26,6 @@ public class ShopCaController {
 
     @GetMapping("/ca/find")
     public IPage<Functions> add(@ModelAttribute PageAble pageAble) {
-        return functionsService.page(pageAble.getPage(), new QueryWrapper<Functions>().lambda().eq(Functions::getType, "2"));
+        return functionsService.page(pageAble.getIPage(), new QueryWrapper<Functions>().lambda().eq(Functions::getType, "2"));
     }
 }

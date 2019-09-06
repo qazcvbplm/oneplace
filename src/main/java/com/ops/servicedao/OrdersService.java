@@ -1,5 +1,6 @@
 package com.ops.servicedao;
 
+import com.ops.dto.OrderAddRequest;
 import com.ops.entity.Orders;
 
 import java.util.List;
@@ -15,4 +16,5 @@ public interface OrdersService {
 
     String add(Integer[] productIds, Integer[] numbers, Orders orders);
 
+    String add2(OrderAddRequest orderAddRequest);
 }

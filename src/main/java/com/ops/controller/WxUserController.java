@@ -22,9 +22,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Controller
 @RequestMapping("wxuser")
@@ -37,6 +35,10 @@ public class WxUserController {
     private WxUserFollowService wxUserFollowService;
     @Autowired
     private PlaceService placeService;
+
+    public static Map<String, Queue<String>> formId = new HashMap<>();
+
+
     public static Map<String, String> app;
 
     static {
@@ -47,6 +49,17 @@ public class WxUserController {
         app.put("paykey", "csB18857818257332522199510208595");
     }
 
+    @GetMapping("formid")
+    @ApiOperation(value = "获取formid", httpMethod = "POST")
+    public void adduser(HttpServletRequest request, HttpServletResponse response, String userId, String form) {
+        if (formId.get(userId) != null) {
+            formId.get(userId).offer(form);
+        } else {
+            Queue<String> queue = new LinkedList<>();
+            queue.offer(form);
+            formId.put(userId, queue);
+        }
+    }
 
     @GetMapping("login")
     @ApiOperation(value = "注册用户", httpMethod = "POST")

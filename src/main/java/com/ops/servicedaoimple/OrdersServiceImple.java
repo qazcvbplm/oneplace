@@ -3,8 +3,10 @@ package com.ops.servicedaoimple;
 import com.google.gson.JsonObject;
 import com.ops.controller.WxUserController;
 import com.ops.dao.*;
+import com.ops.dto.OrderAddRequest;
 import com.ops.entity.*;
 import com.ops.servicedao.OrdersService;
+import com.ops.servicedao.ProductBService;
 import com.ops.sunwou.exception.MyException;
 import com.ops.sunwou.wx.NotifyImple;
 import com.ops.sunwou.wx.WXpayUtil;
@@ -36,6 +38,8 @@ public class OrdersServiceImple implements OrdersService {
     private WxUserCouponMapper wxUserCouponMapper;
     @Autowired
     private WxUserBackPackMapper wxUserBackPackMapper;
+    @Autowired
+    private ProductBService productBService;
 
     static JsonObject chargecall = new JsonObject();
 
@@ -91,6 +95,39 @@ public class OrdersServiceImple implements OrdersService {
                 throw new MyException("优惠券不存在");
             }
         }
+        ordersMapper.insert(orders);
+        return orderId;
+    }
+
+    @Transactional
+    @Override
+    public String add2(OrderAddRequest orderAddRequest) {
+        String orderId = Util.GenerateOrderNumber(orderAddRequest.getOrders().getUserid(), "onp");
+        BigDecimal total = BigDecimal.ZERO;
+        for (int i = 0; i < orderAddRequest.getProductId().size(); i++) {
+            ProductB productTemp = productBService.getById(orderAddRequest.getProductId().get(i));
+            OrderProduct orderProductTemp = new OrderProduct();
+            orderProductTemp.setNumbers(orderAddRequest.getCounts().get(i));
+            orderProductTemp.setOrderid(orderId);
+            orderProductTemp.setProductId(productTemp.getId().intValue());
+            orderProductTemp.setProductimage(productTemp.getImages());
+            orderProductTemp.setProductname(productTemp.getName());
+            orderProductTemp.setProductprice(productTemp.getPrice());
+            orderProductTemp.setProducttype("");
+            orderProductTemp.setTotalprice(productTemp.getPrice().multiply(new BigDecimal(orderProductTemp.getNumbers())));
+            total = total.add(orderProductTemp.getTotalprice());
+            orderProductMapper.insert(orderProductTemp);
+        }
+        Orders orders = orderAddRequest.getOrders();
+        orders.setShopid("");
+        orders.setShopName("");
+        orders.setType("商城订单");
+        orders.setStatus("待付款");
+        orders.setId(orderId);
+        orders.setCreatetime(new Date());
+        orders.setCouponid(0);
+        orders.setCouponprice(BigDecimal.ZERO);
+        orders.setTotalprice(total);
         ordersMapper.insert(orders);
         return orderId;
     }

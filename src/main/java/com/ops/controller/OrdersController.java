@@ -1,5 +1,6 @@
 package com.ops.controller;
 
+import com.ops.dto.OrderAddRequest;
 import com.ops.entity.Orders;
 import com.ops.servicedao.OrdersService;
 import com.ops.sunwou.exception.MyException;
@@ -13,6 +14,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import javax.servlet.http.HttpServletRequest;
@@ -38,6 +40,15 @@ public class OrdersController {
             throw new MyException("参数有误");
         }
         String orderId = ordersService.add(productIds, numbers, orders);
+        new ResultUtil().success(request, response, orderId);
+    }
+
+    @PostMapping("add2")
+    @ApiOperation(value = "商城下单", httpMethod = "POST")
+    public void add2(HttpServletRequest request,
+                     HttpServletResponse response,
+                     @RequestBody OrderAddRequest orderAddRequest) {
+        String orderId = ordersService.add2(orderAddRequest);
         new ResultUtil().success(request, response, orderId);
     }
 

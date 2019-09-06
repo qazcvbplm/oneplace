@@ -1,5 +1,6 @@
 package com.ops.entity;
 
+import com.baomidou.mybatisplus.annotation.TableField;
 import com.ops.util.MQO;
 import org.hibernate.validator.constraints.NotEmpty;
 
@@ -25,6 +26,7 @@ public class Orders {
 
     private Integer couponid;
 
+    @TableField(exist = false)
     private MQO mqo = new MQO();
 
     private Date createtime;
@@ -39,8 +41,18 @@ public class Orders {
 
     private String shopName;
 
+    @TableField(exist = false)
     private List<OrderProduct> op;
 
+    private String prepareId;
+
+    public String getPrepareId() {
+        return prepareId;
+    }
+
+    public void setPrepareId(String prepareId) {
+        this.prepareId = prepareId;
+    }
 
     public List<OrderProduct> getOp() {
         return op;

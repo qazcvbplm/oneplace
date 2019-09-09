@@ -45,3 +45,5 @@ server:
 file:
   path: /usr/local/image/
   prefix: https://www.sunwou.com/oneplace
+
+

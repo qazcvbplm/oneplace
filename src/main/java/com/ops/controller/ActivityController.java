@@ -2,12 +2,14 @@ package com.ops.controller;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.ops.dto.ActivityAdd;
 import com.ops.entity.ActivityB;
 import com.ops.servicedao.ActivityBService;
 import ops.model.X.area.entity.Functions;
 import ops.model.X.area.service.FunctionsService;
 import ops.model.X.base.page.PageAble;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -21,7 +23,12 @@ public class ActivityController {
 
 
     @PostMapping("/activity/add")
-    public boolean add(@RequestBody Functions functions) {
+    public boolean add(@RequestBody @Validated ActivityAdd activityAdd) {
+        Functions functions = new Functions();
+        functions.setTitle(activityAdd.getTitle());
+        functions.setSubTitle(activityAdd.getSubTitle());
+        functions.setImage(activityAdd.getImage());
+        functions.setRichText(activityAdd.getRichText());
         functions.setType("1");
         functions.setAreaId(0L);
         functions.setParentId(0L);

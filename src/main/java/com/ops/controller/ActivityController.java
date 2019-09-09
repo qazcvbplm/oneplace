@@ -8,6 +8,7 @@ import com.ops.servicedao.ActivityBService;
 import ops.model.X.area.entity.Functions;
 import ops.model.X.area.service.FunctionsService;
 import ops.model.X.base.page.PageAble;
+import ops.model.X.dto.Deletes;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -29,10 +30,10 @@ public class ActivityController {
         functions.setSubTitle(activityAdd.getSubTitle());
         functions.setImage(activityAdd.getImage());
         functions.setRichText(activityAdd.getRichText());
-        functions.setType("1");
+        functions.setType(activityAdd.getType());
         functions.setAreaId(0L);
         functions.setParentId(0L);
-
+        functions.setRemark(activityAdd.getRemark());
         functionsService.save(functions);
         return true;
     }
@@ -64,15 +65,21 @@ public class ActivityController {
     }
 
     @PostMapping("/activity/delete")
-    public boolean delete(Long id) {
-        functionsService.removeById(id);
-        return true;
+    public boolean delete(@RequestBody Deletes deletes) {
+        return functionsService.removeByIds(deletes.getIds());
     }
 
     @GetMapping("/activity/find")
-    public IPage add(@ModelAttribute PageAble pageAble) {
+    public IPage find(@ModelAttribute PageAble pageAble) {
         return functionsService.page(pageAble.getIPage(),
                 new QueryWrapper<Functions>().lambda()
                         .eq(Functions::getType, "1"));
+    }
+
+    @GetMapping("/activity2/find")
+    public IPage find2(@ModelAttribute PageAble pageAble) {
+        return functionsService.page(pageAble.getIPage(),
+                new QueryWrapper<Functions>().lambda()
+                        .eq(Functions::getType, "2"));
     }
 }

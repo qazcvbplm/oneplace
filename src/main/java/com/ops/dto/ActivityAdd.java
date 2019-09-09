@@ -2,18 +2,36 @@ package com.ops.dto;
 
 import org.hibernate.validator.constraints.NotBlank;
 
+
 public class ActivityAdd {
 
-    @NotBlank
     private String title;
-    @NotBlank
+
     private String subTitle;
     @NotBlank
     private String image;
 
+    private String remark;
     
     private String richText;
 
+    private String type;
+
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
+    }
+
+    public String getRemark() {
+        return remark;
+    }
+
+    public void setRemark(String remark) {
+        this.remark = remark;
+    }
 
     public String getTitle() {
         return title;

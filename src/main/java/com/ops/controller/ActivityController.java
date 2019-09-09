@@ -25,6 +25,7 @@ public class ActivityController {
         functions.setType("1");
         functions.setAreaId(0L);
         functions.setParentId(0L);
+
         functionsService.save(functions);
         return true;
     }

@@ -3,8 +3,11 @@ package com.ops.controller;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.ops.dto.ActivityAdd;
+import com.ops.dto.ProductBsResp;
 import com.ops.entity.ActivityB;
+import com.ops.entity.ProductB;
 import com.ops.servicedao.ActivityBService;
+import com.ops.servicedao.ProductBService;
 import ops.model.X.area.entity.Functions;
 import ops.model.X.area.service.FunctionsService;
 import ops.model.X.base.page.PageAble;
@@ -12,6 +15,9 @@ import ops.model.X.dto.Deletes;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @RestController
 public class ActivityController {
@@ -21,6 +27,9 @@ public class ActivityController {
 
     @Autowired
     private ActivityBService activityBService;
+
+    @Autowired
+    private ProductBService productBService;
 
 
     @PostMapping("/activity/add")
@@ -77,9 +86,14 @@ public class ActivityController {
     }
 
     @GetMapping("/activity2/find")
-    public IPage find2(@ModelAttribute PageAble pageAble) {
-        return functionsService.page(pageAble.getIPage(),
+    public List<ProductBsResp> find2(@ModelAttribute PageAble pageAble) {
+        IPage<Functions> rs = functionsService.page(pageAble.getIPage(),
                 new QueryWrapper<Functions>().lambda()
                         .eq(Functions::getType, "2"));
+        List<ProductBsResp> result = new ArrayList<>();
+        for (Functions temp : rs.getRecords()) {
+            result.add(new ProductBsResp(temp, productBService.list(new QueryWrapper<ProductB>().lambda().eq(ProductB::getCaId, temp.getId()))));
+        }
+        return result;
     }
 }

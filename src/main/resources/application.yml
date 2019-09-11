@@ -43,7 +43,6 @@ server:
     context-path: /oneplace
   tomcat:
     use-relative-redirects: false
-  port: 8088
 file:
   path: /usr/local/image/
   prefix: https://www.sunwou.com/oneplace

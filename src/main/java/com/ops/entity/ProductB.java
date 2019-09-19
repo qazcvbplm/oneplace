@@ -45,9 +45,20 @@ public class ProductB implements BaseEntity {
     @Column(name = "create_time", nullable = false)
     private Date createTime;
 
+    @Column(name = "stock", nullable = false, columnDefinition = "int default 0")
+    private Integer stock;
+
     @TableLogic
     @Column(nullable = false, columnDefinition = "int default 0")
     private Integer deleted;
+
+    public Integer getStock() {
+        return stock;
+    }
+
+    public void setStock(Integer stock) {
+        this.stock = stock;
+    }
 
     public Long getCaId() {
         return caId;

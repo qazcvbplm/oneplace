@@ -107,6 +107,12 @@ public class OrdersServiceImple implements OrdersService {
         for (int i = 0; i < orderAddRequest.getProductId().size(); i++) {
             ProductB productTemp = productBService.getById(orderAddRequest.getProductId().get(i));
             OrderProduct orderProductTemp = new OrderProduct();
+            if (productTemp.getStock() <= 0) {
+                throw new RuntimeException(productTemp.getName() + "库存不足");
+            } else {
+                productTemp.setStock(productTemp.getStock() - 1);
+                productBService.updateById(productTemp);
+            }
             orderProductTemp.setNumbers(orderAddRequest.getCounts().get(i));
             orderProductTemp.setOrderid(orderId);
             orderProductTemp.setProductId(productTemp.getId().intValue());
@@ -128,7 +134,9 @@ public class OrdersServiceImple implements OrdersService {
         orders.setCouponid(0);
         orders.setCouponprice(BigDecimal.ZERO);
         orders.setTotalprice(total);
+        orders.setRemark("");
         ordersMapper.insert(orders);
+
         return orderId;
     }
 

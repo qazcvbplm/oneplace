@@ -1,8 +1,14 @@
 package com.ops.entity;
 
+import com.baomidou.mybatisplus.annotation.IdType;
+import com.baomidou.mybatisplus.annotation.TableId;
+
+import javax.persistence.Id;
 import java.math.BigDecimal;
 
 public class OrderProduct {
+    @TableId(type = IdType.AUTO)
+    @Id
     private Integer id;
 
     private String productname;
